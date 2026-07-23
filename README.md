@@ -4,19 +4,19 @@
 	Ifrit — a CNN-based forest fire detection system that recognizes wildfires from images, aimed at low-resource / embedded deployment. 
 	Project for Computational Intelligence and Deep Learning (Master's in AI and Data Engineering, University of Pisa).
 
-	**Goal**: 
+	Goal: 
 	Build a custom convolutional network for binary Fire / Non-Fire classification that is both accurate and small enough to run on constrained hardware (e.g. Jetson Nano, Google Coral), where a false negative (missed fire) is treated as far more costly than a false positive.
 
-	**Dataset cleaning (a core contribution)**
+	Dataset cleaning (a core contribution):
 	The starting Kaggle dataset (~5,050 images) was noisy and only loosely related to the actual problem. I performed an in-depth, manual curation: removing 391 corrupted files, then discarding 779 images incongruent with forest-fire detection (snow-capped mountains, cities, beaches, fireworks, city fires, satellite/rendered images, etc.), each categorized with an explicit rationale. I also analyzed the per-class RGB color distribution to check for and mitigate the obvious bias (the network learning "lots of red = fire"), verifying the distribution stayed balanced after cleaning. Resizing used AREA interpolation, chosen after empirically trading ~30% extra preprocessing time for higher image quality.
 
-	**Model design & optimization**: 
+	Model design & optimization: 
 	Starting from AlexNet and GoogLeNet as baselines, I designed a custom network family, IfritNet (v1–v4), iteratively evolving the architecture — introducing inception modules and 1×1 convolutions — to shrink the network while preserving or improving accuracy. Hyperparameters were tuned rigorously: 10-fold cross-validation over every (batch size, early-stopping patience) pair, then Keras Hyperband tuning for learning rate and dropout.
 
-	**Results**: 
+	Results: 
 	The final IfritNet v4 reaches 98.17% test accuracy with 0.65% false negatives using only ~74k parameters and a 1.22 MB model — about 99.7% fewer parameters than AlexNet (which reached ~95% accuracy at ~189 MB), while being both more accurate and drastically lighter.
 
-	**Tech stack**: 
+	Tech stack: 
 	Python, TensorFlow/Keras, OpenCV, Keras Tuner. Trained across an RTX 3060, a GTX 1080, and Google Colab (T4), with a comparative analysis of each.
 
 ## DATASET
